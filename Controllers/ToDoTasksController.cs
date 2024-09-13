@@ -30,8 +30,13 @@ namespace MyToDo.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id, Name, Description, StatusCode, UserId")] ToDoTask task)
         {
-            // temporary code
-            return View();
+            if (ModelState.IsValid)
+            {
+                _context.Add(task);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            return View(task);
         }
     }
 }
