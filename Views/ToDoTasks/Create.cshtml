@@ -1,0 +1,48 @@
+﻿@model MyToDo.Models.ToDoTask
+@using Microsoft.AspNetCore.Identity
+@using MyToDo.Enums
+@inject UserManager<IdentityUser> userManager;
+
+@{
+    
+}
+
+<hr/>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label">Name:</label>
+                <input asp-for="Name" class="form-control"/>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label">Description:</label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div form-group>
+                <label asp-for="StatusCode" class="control-label">Task status:</label>
+                <select asp-for="StatusCode" class="form-control">
+                    <option value="@((int)ToDoStates.ToDo)">@ToDoStates.ToDo</option>
+                    <option value="@((int)ToDoStates.InProgress)">@ToDoStates.InProgress</option>
+                    <option value="@((int)ToDoStates.Done)">@ToDoStates.Done</option>
+                </select>
+                <span asp-validation-for="StatusCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="hidden" asp-for="UserId" class="form-control" value="@userManager.GetUserId(User)"/>
+            </div>
+            <div class="form-group" >
+                <input class="mt-2" type="submit" value="Create" class="btn btn-primary" />
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div>
+    <a class="btn btn-info mt-2" asp-action="Index">Back to the list</a>
+</div>
