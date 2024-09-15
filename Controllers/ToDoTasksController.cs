@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyToDo.Data;
 using MyToDo.Models;
+using System.Security.Claims;
 
 namespace MyToDo.Controllers
 {
@@ -15,8 +16,8 @@ namespace MyToDo.Controllers
 
         public async Task<IActionResult> Index()
         {
-            
-            return View(await _context.Tasks.ToListAsync());
+            var model = await _context.Tasks.Where(t => t.UserId == HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value).ToListAsync();
+            return View(model);
         }
 
         // GET request

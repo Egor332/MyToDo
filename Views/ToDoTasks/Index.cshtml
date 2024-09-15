@@ -5,6 +5,19 @@
 
 <h2>MyToDo list:</h2>
 
-<ul>
+<div class="container">
+    <div class="row">
+        @foreach (var task in Model)
+        {
+            <div>
+                <div class="d-flex justify-content-center">
+                    <h4>@task.Name</h4>
+                </div>
+                <div class="d-flex justify-content-center">
+                    @task.Description
+                </div>
+            </div>
 
-</ul>
+        }
+    </div>
+</div>
