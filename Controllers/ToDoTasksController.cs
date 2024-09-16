@@ -75,7 +75,7 @@ namespace MyToDo.Controllers
                 {
                     _context.Tasks.Update(task);
                     await _context.SaveChangesAsync();
-                } 
+                }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (IsTaskExist(id))
@@ -113,6 +113,20 @@ namespace MyToDo.Controllers
                 return NotFound(); // May be change to access denied
             }
             return View(task);
+        }
+
+        // POST request
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            ToDoTask? task = await _context.Tasks.FindAsync(id);
+            if (task != null) // May be add task is already deleted
+            {
+                _context.Tasks.Remove(task);
+            }
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         public bool IsTaskExist(int id)
