@@ -30,7 +30,7 @@ namespace MyToDo.Controllers
         // POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id, Name, Description, StatusCode, UserId")] ToDoTask task)
+        public async Task<IActionResult> Create([Bind("Id, Name, Description, StatusCode, DueDate, UserId")] ToDoTask task)
         {
             if (ModelState.IsValid)
             {
@@ -63,7 +63,7 @@ namespace MyToDo.Controllers
         // POST request
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id, Name, Description, StatusCode, UserId")] ToDoTask task)
+        public async Task<IActionResult> Edit(int id, [Bind("Id, Name, Description, StatusCode, DueDate, UserId")] ToDoTask task)
         {
             if (id != task.Id)
             {

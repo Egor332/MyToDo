@@ -12,6 +12,8 @@ namespace MyToDo.Models
         public string? Description { get; set; }
         [Display(Name = "Status")]
         public byte? StatusCode { get; set; }
+        [Display(Name="Due date")]
+        public DateOnly? DueDate { get; set; }
 
         [Required]
         public string? UserId { get; set; }
