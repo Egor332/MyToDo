@@ -90,6 +90,28 @@ namespace MyToDo.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
+            return View(task); // doesn't really obvious when something went wrong
+        }
+
+        // GET request
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            // ToDoTask task = await _context.Tasks.FindAsync(id);
+            ToDoTask task = await _context.Tasks
+                .Include(t => t.User)
+                .FirstOrDefaultAsync(tk => tk.Id == id); // a little bit strange but will try
+            if (task == null)
+            {
+                return NotFound(); // May be change to the task does not exist
+            }
+            if (task.UserId != User.FindFirstValue(ClaimTypes.NameIdentifier))
+            {
+                return NotFound(); // May be change to access denied
+            }
             return View(task);
         }
 

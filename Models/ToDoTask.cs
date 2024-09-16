@@ -10,6 +10,7 @@ namespace MyToDo.Models
         public int Id { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
+        [Display(Name = "Status")]
         public byte? StatusCode { get; set; }
 
         [Required]
