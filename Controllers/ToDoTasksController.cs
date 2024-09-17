@@ -17,7 +17,8 @@ namespace MyToDo.Controllers
         public async Task<IActionResult> Index()
         {
             var model = await _context.Tasks.
-                Where(t => t.UserId == HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value).ToListAsync();
+                Where(t => t.UserId == HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value)
+                .OrderBy(t => t.DueDate).ToListAsync();
             return View(model);
         }
 
