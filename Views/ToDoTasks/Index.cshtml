@@ -148,7 +148,7 @@
                     <span class="task-description">@task.Description</span>
                 </div>
                 <div class="task-status @GetStatusClass((task.StatusCode))">
-                    <a class="task-status-link" asp-action="Create">@Enum.GetName(typeof(ToDoStates), task.StatusCode)</a>
+                    <a class="task-status-link" asp-action="ChangeStatus" asp-route-id="@task.Id">@Enum.GetName(typeof(ToDoStates), task.StatusCode)</a>
                 </div>
                 <div class="task-due">
                     Due: @task.DueDate

@@ -129,6 +129,25 @@ namespace MyToDo.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public async Task<IActionResult> ChangeStatus(int? id)
+        {
+            if (id==null)
+            {
+                return NotFound();
+            }
+            ToDoTask task = await _context.Tasks.FindAsync(id);
+            if (task == null)
+            {
+                return NotFound();
+            }
+            if (task.StatusCode != (byte)2) task.StatusCode++; // May be add "already done message"
+            _context.Tasks.Update(task);
+            await _context.SaveChangesAsync();
+            
+            return RedirectToAction(nameof(Index));
+            
+        }
+
         public bool IsTaskExist(int id)
         {
             return _context.Tasks.Any(task => task.Id == id);
