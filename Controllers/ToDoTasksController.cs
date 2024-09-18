@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using MyToDo.Data;
+using MyToDo.Enums;
 using MyToDo.Models;
 using System.Security.Claims;
+
 
 namespace MyToDo.Controllers
 {
@@ -14,12 +17,25 @@ namespace MyToDo.Controllers
 
         public ToDoTasksController(ApplicationDbContext context) { _context = context; }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(List<byte> status)
         {
-            var model = await _context.Tasks.
-                Where(t => t.UserId == HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value)
-                .OrderBy(t => t.DueDate).ToListAsync();
-            return View(model);
+            if (status == null || status.Count == 0)
+            {
+                var model = await _context.Tasks.
+                    Where(t => (t.UserId == HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value) && ((t.StatusCode == (byte)ToDoStates.ToDo) || (t.StatusCode == (byte)ToDoStates.InProgress)))
+                    .OrderBy(t => t.DueDate).ToListAsync();
+
+                return View(model);
+            }
+            else
+            {
+                ViewData["CurrentStatusFilters"] = status;
+                var model = await _context.Tasks.
+                    Where(t => (t.UserId == HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value) && (status.Contains((byte)t.StatusCode)))
+                    .OrderBy(t => t.DueDate).ToListAsync();
+
+                return View(model);
+            }
         }
 
         // GET request

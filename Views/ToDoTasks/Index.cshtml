@@ -38,6 +38,16 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
+        .filterStatus {            
+            margin: auto;
+            max-width: 200px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            align-content: center;
+            margin-bottom: 8px;
+        }
+
         .task {
             display: flex;
             justify-content: space-between;
@@ -140,7 +150,20 @@
 </head>
 <body>
     <h1>My ToDo List</h1>
-
+    <div class="filterStatus">
+        <form asp-action="Index" method="get">
+            <input type="checkbox" id="IncludeToDo" name="status" value="@((byte)ToDoStates.ToDo)" @((ViewData["CurrentStatusFilters"] as List<byte>)?.Contains((byte)ToDoStates.ToDo) == true ? "checked" : "") />
+            <label for="IncludeToDo">ToDo</label>
+            <br />
+            <input type="checkbox" id="IncludeInProgress" name="status" value="@((byte)ToDoStates.InProgress)" @((ViewData["CurrentStatusFilters"] as List<byte>)?.Contains((byte)ToDoStates.InProgress) == true ? "checked" : "") />
+            <label for="IncludeInProgress">InProgress</label>
+            <br />
+            <input type="checkbox" id="IncludeDone" name="status" value="@((byte)ToDoStates.Done)" @((ViewData["CurrentStatusFilters"] as List<byte>)?.Contains((byte)ToDoStates.Done) == true ? "checked" : "")/>
+            <label for="IncludeDone">Done</label>
+            <br />
+            <button type="submit">Filter</button>
+        </form>
+    </div>
     <div class="todo-list">
         @foreach (var task in Model)
         {
