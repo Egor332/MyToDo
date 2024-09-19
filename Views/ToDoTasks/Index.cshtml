@@ -5,7 +5,7 @@
 <html lang="en">
 <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
 <head>
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My ToDo List</title>
@@ -65,10 +65,14 @@
             background-color: #f9f9f9;
         }
 
+        .task-expired {
+            background: #FAA0A0;
+        }
+
         .task-details {
             display: flex;
             flex-direction: column;
-            max-width: 60%;
+            max-width: 50%;
         }
 
         .task-name {
@@ -127,7 +131,7 @@
             margin-top: 10px;
             transition: background-color 0.3s ease;
         }
-
+        
         .btn:hover {
             background-color: #357ABD;
         }
@@ -167,7 +171,7 @@
     <div class="todo-list">
         @foreach (var task in Model)
         {
-            <div class="task">
+            <div class="task @(IsTaskExpired(task.DueDate, task.StatusCode))">
                 <div class="task-details">
                     <span class="task-name">@task.Name</span>
                     <span class="task-description">@task.Description</span>
@@ -179,8 +183,8 @@
                     Due: @task.DueDate
                 </div>
                 <div>
-                    <a class="btn" asp-action="Edit" asp-route-id="@task.Id">E@*<i class="fa-regular fa-pen-to-square"></i>*@</a>
-                    <a class="btn" asp-action="Delete" asp-route-id="@task.Id">D@*<i class="fa-solid fa-trash"></i>*@</a>
+                    <a class="btn" asp-action="Edit" asp-route-id="@task.Id"><i class="fa fa-edit"></i></a>
+                    <a class="btn" asp-action="Delete" asp-route-id="@task.Id"><i class="fa fa-trash"></i></a>
                 </div>
                 
             </div>
@@ -206,6 +210,15 @@
                 default:
                     return "";
             }
+        }
+
+        string IsTaskExpired(DateOnly? dueDate, byte? statusCode)
+        {            
+            if ((dueDate < DateOnly.FromDateTime(DateTime.Now)) && (statusCode != (byte)ToDoStates.Done))
+            {
+                return "task-expired";
+            }
+            return "";
         }
     }
 </body>
